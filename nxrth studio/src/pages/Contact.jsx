@@ -29,8 +29,8 @@ export default function Contact() {
         </form>
         <div className="grid gap-4">
           {[
-            ['Email', 'hello@nxrthstudio.com'],
-            ['Phone / WhatsApp', '+250 000 000 000'],
+            ['Email', 'sales@nxrthstudio.com'],
+            ['Phone / WhatsApp', '+250 788 537 886'],
             ['Location', 'Kigali, Rwanda'],
             ['Social Media', 'Instagram, TikTok, X'],
           ].map(([title, text]) => (
