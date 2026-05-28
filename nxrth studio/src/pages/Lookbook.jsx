@@ -1,6 +1,7 @@
 const looks = [
   ['Street Essentials', 'Oversized layers, grounded neutrals, and easy movement.', '/images/lookbook-black-nxrth.png'],
-  ['Studio Minimalism', 'Quiet textures and clean silhouettes under soft light.', '/images/nxrth-branded-collection.png'],
+  ['Studio Minimalism', 'White and black essentials with clean studio branding.', '/images/nxrth-white-black-collection.png'],
+  ['Color Signal', 'Muted yellow and deep red pieces bring new energy to the NXRTH uniform.', '/images/nxrth-yellow-red-hero.png'],
   ['Night Collection', 'Charcoal tones and sharper proportions for after dark.', '/images/nxrth-black-models-hero.png'],
   ['Hoodie & Cap Study', 'Branded essentials with a polished street-luxury finish.', '/images/nxrth-hoodie-cap.png'],
   ['Utility Lines', 'Functional structure with a polished street edge.', '/images/nxrth-branded-collection.png'],
