@@ -1,8 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Button from '../components/Button.jsx';
 import ProductCard from '../components/ProductCard.jsx';
-import { formatRwf, getProductBySlug, products } from '../data/products.js';
+import { formatRwf, getProductBySlug, products as fallbackProducts } from '../data/products.js';
+import { fetchProductBySlug, fetchProducts } from '../api/products.js';
 import { useCart } from '../context/CartContext.jsx';
 
 function DetailRow({ title, children }) {
@@ -16,14 +17,28 @@ function DetailRow({ title, children }) {
 
 export default function ProductDetails() {
   const { slug } = useParams();
-  const product = getProductBySlug(slug);
+  const [product, setProduct] = useState(() => getProductBySlug(slug));
+  const [products, setProducts] = useState(fallbackProducts);
   const { addItem } = useCart();
   const [image, setImage] = useState(product?.images[0]);
   const [size, setSize] = useState(product?.sizes[0]);
   const [color, setColor] = useState(product?.colors[0]);
   const [quantity, setQuantity] = useState(1);
 
-  const related = useMemo(() => products.filter((item) => item.category === product?.category && item.id !== product?.id).slice(0, 4), [product]);
+  const related = useMemo(
+    () => products.filter((item) => item.category === product?.category && item.id !== product?.id).slice(0, 4),
+    [product, products],
+  );
+
+  useEffect(() => {
+    fetchProductBySlug(slug).then((nextProduct) => {
+      setProduct(nextProduct);
+      setImage(nextProduct?.images?.[0]);
+      setSize(nextProduct?.sizes?.[0]);
+      setColor(nextProduct?.colors?.[0]);
+    });
+    fetchProducts().then(setProducts);
+  }, [slug]);
 
   if (!product) {
     return (

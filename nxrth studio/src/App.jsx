@@ -10,9 +10,16 @@ import About from './pages/About.jsx';
 import Lookbook from './pages/Lookbook.jsx';
 import Contact from './pages/Contact.jsx';
 import Cart from './pages/Cart.jsx';
+import AdminLogin from './pages/admin/AdminLogin.jsx';
+import RequireAdmin from './pages/admin/RequireAdmin.jsx';
+import AdminLayout from './components/admin/AdminLayout.jsx';
+import AdminDashboard from './pages/admin/AdminDashboard.jsx';
+import AdminProducts from './pages/admin/AdminProducts.jsx';
+import AdminProductForm from './pages/admin/AdminProductForm.jsx';
 
 function App() {
   const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith('/admin');
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
@@ -20,7 +27,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Navbar />
+      {!isAdminRoute && <Navbar />}
       <main>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -31,10 +38,19 @@ function App() {
           <Route path="/lookbook" element={<Lookbook />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route element={<RequireAdmin />}>
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="products" element={<AdminProducts />} />
+              <Route path="products/new" element={<AdminProductForm />} />
+              <Route path="products/:id/edit" element={<AdminProductForm />} />
+            </Route>
+          </Route>
         </Routes>
       </main>
-      <Footer />
-      <CartDrawer />
+      {!isAdminRoute && <Footer />}
+      {!isAdminRoute && <CartDrawer />}
     </div>
   );
 }

@@ -1,16 +1,25 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/ProductCard.jsx';
-import { categories, products } from '../data/products.js';
+import { categories, products as fallbackProducts } from '../data/products.js';
+import { fetchProducts } from '../api/products.js';
 
 export default function Shop() {
   const [params] = useSearchParams();
+  const [products, setProducts] = useState(fallbackProducts);
+  const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState(params.get('category') || 'All');
   const [size, setSize] = useState('All');
   const [color, setColor] = useState('All');
   const [availability, setAvailability] = useState('All');
   const [sort, setSort] = useState('Newest');
   const [query, setQuery] = useState('');
+
+  useEffect(() => {
+    fetchProducts()
+      .then(setProducts)
+      .finally(() => setLoading(false));
+  }, []);
 
   const filtered = useMemo(() => {
     let list = products.filter((product) => {
@@ -36,6 +45,7 @@ export default function Shop() {
         </div>
       </section>
       <section className="container-pad py-10">
+        {loading && <p className="mb-6 text-sm uppercase tracking-[0.18em] text-muted">Loading collection</p>}
         <div className="mb-10 grid gap-3 md:grid-cols-3 lg:grid-cols-6">
           <input className="field md:col-span-3 lg:col-span-2" placeholder="Search products" value={query} onChange={(e) => setQuery(e.target.value)} />
           <select className="field" value={category} onChange={(e) => setCategory(e.target.value)}>

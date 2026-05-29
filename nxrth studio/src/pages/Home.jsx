@@ -4,9 +4,11 @@ import CategoryCard from '../components/CategoryCard.jsx';
 import Newsletter from '../components/Newsletter.jsx';
 import ProductCard from '../components/ProductCard.jsx';
 import SectionHeader from '../components/SectionHeader.jsx';
-import { products } from '../data/products.js';
+import { products as fallbackProducts } from '../data/products.js';
+import { fetchProducts } from '../api/products.js';
 
 export default function Home() {
+  const [products, setProducts] = useState(fallbackProducts);
   const featured = products.slice(0, 8);
   const heroImages = [
     {
@@ -31,6 +33,10 @@ export default function Home() {
 
     return () => window.clearInterval(timer);
   }, [heroImages.length]);
+
+  useEffect(() => {
+    fetchProducts().then(setProducts);
+  }, []);
 
   return (
     <div className="fade-in">
